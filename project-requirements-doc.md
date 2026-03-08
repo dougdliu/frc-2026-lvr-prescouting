@@ -64,8 +64,11 @@
 ### **3. Analysis Steps (per notebook)**
 1. **Fetch Events:** Retrieve all official events for the year. Filter to `event_type` in `{0, 1, 2, 3, 4, 5, 6}`. Assign CMP events a computed week number.
 2. **Discover Score Breakdown:** Print a sample match's full score breakdown JSON to confirm the correct field names.
-3. **Fetch Match Data:** Iterate through all events, extracting per-match: event key, match key, match type (qual vs playoff), week, red/blue auto points, red/blue total scores, winning alliance, and auto winner (red/blue/tie).
-4. **Auto Win Percentage:** For matches where one alliance decisively won autonomous (no ties), calculate the % of the time that alliance also won the overall match. Produce a table broken down by week plus an overall row.
+3. **Fetch Match Data:** Iterate through all events, extracting per-match: event key, match key, match type (qual vs playoff), week, red/blue auto points, red/blue total scores, red/blue foul points, and auto winner (red/blue).
+   - **Foul Adjustment:** The match winner is determined from *foul-adjusted* totals rather than raw scores. For each alliance: `adjusted_total = total_score − foulPoints` (where `foulPoints` are the points awarded to that alliance due to the opposing alliance's fouls). The alliance with the higher adjusted total is recorded as the winner.
+   - **Tie Handling:** Actual ties and matches that become ties after foul adjustment are both excluded from the analysis entirely.
+   - **Auto Tie Exclusion:** Matches where both alliances scored equal auto points are excluded at collection time. Only matches with a decisive auto winner are retained.
+4. **Auto Win Percentage:** For all collected matches (auto ties and match ties already excluded), calculate the % of the time the alliance that won autonomous also won the overall match (using foul-adjusted totals). Produce a table broken down by week plus an overall row.
 5. **Winning Auto Score Distribution:**
    - Percentile table (0%–100% at 10% intervals) by week + overall.
    - Per-week histograms (bin = 1 pt) with 3 columns per week: All Matches, Qualification, Playoff.
@@ -85,6 +88,8 @@
 ### **5. Edge Case Handling**
 * **Empty subsets:** If a week has no playoff matches, the subplot shows a "no data" title.
 * **Missing score breakdown:** Matches without score breakdown data are skipped.
+* **Foul-adjusted ties:** Matches where alliances are tied after subtracting foul points are excluded, even if the raw scores differ.
+* **Auto ties:** Matches where both alliances scored equal auto points are excluded at data collection time.
 * **Rate Limiting:** Same retry/backoff strategy as Part A.
 
 ---
