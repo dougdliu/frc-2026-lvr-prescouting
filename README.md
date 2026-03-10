@@ -2,12 +2,12 @@
 
 A collection of Jupyter Notebooks for **FRC pre-scouting** and **autonomous strategy analysis**.
 
-- **Pre-scouting notebook** — Retrieves OPR and game-specific Component OPR statistics for every team registered at the 2026 Las Vegas Regional (`2026nvlv`) based on their most recent prior 2026 competition.
+- **Pre-scouting notebook** — Retrieves OPR and game-specific Component OPR statistics for every team registered at the 2026 Las Vegas Regional (`2026nvlv`) based on their most recent prior 2026 competition, and marks whether each team is already qualified for the 2026 World Championships.
 - **Auto analysis notebooks (2024, 2025, 2026)** — Analyse how winning autonomous correlates with match wins, broken down by week, with percentile distributions and histograms.
 
 ## Data Source
 
-All data is fetched from [The Blue Alliance API v3](https://www.thebluealliance.com/apidocs/v3).
+[The Blue Alliance API v3](https://www.thebluealliance.com/apidocs/v3)
 
 ## Notebooks
 
@@ -30,6 +30,7 @@ All data is fetched from [The Blue Alliance API v3](https://www.thebluealliance.
 | **Achievements** | Energized Achieved, Supercharged Achieved |
 | **Fouls** | Minor Foul Count, Major Foul Count, Foul Points |
 | **Ranking** | RP |
+| **Championship Status** | Qualified for World Championships (`Qualified` / `Not Qualified`) resolved via TBA advancement endpoints and status signals |
 
 ### Auto Analysis Outputs (per year)
 
@@ -47,6 +48,7 @@ All histograms include vertical reference lines at the 10th, Q1, Median, Q3, and
 
 - **Python 3.10+**
 - **A TBA API key** — sign up at https://www.thebluealliance.com/account
+
 
 ## Setup
 
@@ -81,29 +83,29 @@ All histograms include vertical reference lines at the 10th, Q1, Median, Q3, and
    pip install -r requirements.txt
    ```
 
-4. **Create a `.env` file** in the project root to store your TBA API key:
+4. **Create a `.env` file** in the project root with your TBA API key:
 
    **Linux / macOS:**
    ```bash
-   echo 'TBA_API_KEY=your_api_key_here' > .env
+   echo 'TBA_API_KEY=your_tba_api_key_here' > .env
    ```
 
    **Windows (Command Prompt):**
    ```cmd
-   echo TBA_API_KEY=your_api_key_here > .env
+   echo TBA_API_KEY=your_tba_api_key_here > .env
    ```
 
    **Windows (PowerShell):**
    ```powershell
-   Set-Content -Path .env -Value 'TBA_API_KEY=your_api_key_here'
+   'TBA_API_KEY=your_tba_api_key_here' | Set-Content -Path .env
    ```
 
    Or simply create a file named `.env` with a text editor and add:
    ```
-   TBA_API_KEY=your_api_key_here
+   TBA_API_KEY=your_tba_api_key_here
    ```
 
-   Replace `your_api_key_here` with your actual key from https://www.thebluealliance.com/account.
+   Replace the placeholder with your real key from https://www.thebluealliance.com/account
 
    > The `.env` file is listed in `.gitignore` and will **not** be committed.
    > The `python-dotenv` package (included in `requirements.txt`) reads this file automatically.
@@ -140,6 +142,7 @@ All histograms include vertical reference lines at the 10th, Q1, Median, Q3, and
 - Fetch every team registered for the 2026 Las Vegas Regional (excluding team 2375).
 - Look up each team's most recent prior 2026 event (week 5 or earlier).
 - Retrieve OPR and Component OPR statistics from that event.
+- Resolve Worlds qualification using TBA advancement endpoints and status/event fallback checks.
 - Display a ranked table and export results to `2026nvlv_prescouting_stats.csv`.
 
 ### Auto Analysis Notebooks
@@ -167,6 +170,6 @@ frc_2024_auto_analysis.ipynb     # Auto analysis – 2024 (autoPoints)
 requirements.txt                 # Python dependencies
 project-requirements-doc.md      # Detailed project requirements
 2026nvlv_prescouting_stats.csv   # Generated output (after running pre-scouting)
-.env                             # TBA API key (not committed)
+.env                             # TBA API key (not committed, git-ignored)
 .gitignore                       # Git ignore rules
 ```

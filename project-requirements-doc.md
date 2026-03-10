@@ -32,6 +32,7 @@
     * `Team Number`
     * `Team Name`
     * `Latest Event Played Before Week 6` (Name of the previous regional)
+   * `Qualified for World Championships` (`Qualified` or `Not Qualified`, resolved from TBA advancement endpoints and status/event fallback checks)
     * `OPR` (Offensive Power Rating)
     * All 23 match-averaged score breakdown fields listed above
 6. **Output:** Display a clean table within the Jupyter Notebook where teams are ranked from highest OPR to lowest OPR. `N/A` values should be pushed to the bottom of the table. All stat columns should be included in the output. Results are also exported to `2026nvlv_prescouting_stats.csv`.
